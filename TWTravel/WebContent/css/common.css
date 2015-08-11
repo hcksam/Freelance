@@ -9,6 +9,10 @@ body{
 	color: #0000FF;
 }
 
+.header{
+	padding:30px;
+}
+
 .content{
 	color: #0000FF;
 	text-shadow: 2px 2px 1px #777;
