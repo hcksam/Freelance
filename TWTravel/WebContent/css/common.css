@@ -11,4 +11,10 @@ body{
 
 .content{
 	color: #0000FF;
+	text-shadow: 2px 2px 1px #777;
+	font-size:150%;
+}
+
+H1{
+	font-size:350%;
 }

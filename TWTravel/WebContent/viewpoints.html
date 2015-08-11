@@ -10,10 +10,6 @@ img{
 	height:500px;
 }
 
-H1{
-	font-size:300%;
-}
-
 .viewpoints{
     margin-left:auto; 
     margin-right:auto;
@@ -112,6 +108,32 @@ function generatePageNum(page){
 	}
 }
 
+function setTitleStyle(){
+	var width = $('.title').width();
+	var h1size = $('h1').css('font-size');
+	var sizeNum = h1size.replace("px", "");
+	var ctx = $('.title')[0].getContext("2d");
+	var gradient = ctx.createLinearGradient(0, 0, width, width);
+	//gradient.addColorStop(0.1,'rgb(0,0,255)');
+	//gradient.addColorStop(0.3,'rgb(0,255,0)');
+	//gradient.addColorStop(0.4,'rgb(255,0,0)');
+	gradient.addColorStop(0.15,'rgb(255,0,0)');
+	gradient.addColorStop(0.2,'rgb(255,165,0)');
+	gradient.addColorStop(0.25,'rgb(255,255,0)');
+	gradient.addColorStop(0.3,'rgb(0,255,0)');
+	gradient.addColorStop(0.35,'rgb(0,127,255)');
+	gradient.addColorStop(0.4,'rgb(0,0,255)');
+	gradient.addColorStop(0.45,'rgb(139,0,255)');
+	ctx.fillStyle = gradient;
+	ctx.font = "Bold " + h1size + " Verdana";
+	ctx.textAlign="center";
+	ctx.shadowColor = "#000000";
+	ctx.shadowOffsetX = 2;
+	ctx.shadowOffsetY = 2;
+	ctx.shadowBlur = 4;
+	ctx.fillText($('.title').text(), width/2, sizeNum);
+}
+
 $(document).ready(function(){
 	dir = "img/viewpoints/";
 	fileextension = ".jpg";
@@ -124,13 +146,15 @@ $(document).ready(function(){
 	        generateTable(1);
 	    }
 	});
+
+	setTitleStyle();
 });
 </script>
 </head>
 <body>
 <div class="main">
 <div class="header">
-<H1>景點介紹</H1>
+<H1><canvas class="title" width="600px" height="100px">景點介紹</canvas></H1>
 </div>
 <div class="content">
 <table class="viewpoints">
