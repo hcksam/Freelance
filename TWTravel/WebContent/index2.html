@@ -7,33 +7,43 @@
 @import url("css/common.css");
 
 img{
-	height:450px;
+	height:700px;
 }
 
 h1{
+	font-size:250%;
 }
 
 </style>
 <script src="/TWTravel/js/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	var ctx = $('#myCanvas')[0].getContext("2d");
-	var gradient = ctx.createLinearGradient(0, 0, 200, 0);
-	gradient.addColorStop("0", "magenta");
-	gradient.addColorStop("0.5", "blue");
-	gradient.addColorStop("1.0", "red");
+	var left = $('.title').offset().left;
+	var top = $('.title').offset().top;
+	var width = $('.title').width();
+	var height = $('.title').height();
+	var h1size = $('h1').css('font-size');
+	var sizeNum = h1size.replace("px", "");
+	var ctx = $('.title')[0].getContext("2d");
+	var gradient = ctx.createLinearGradient(0, 0, width, width);
+	gradient.addColorStop(0.1,'rgb(0,0,255)');
+	gradient.addColorStop(0.3,'rgb(0,255,0)');
+	gradient.addColorStop(0.4,'rgb(255,0,0)');
 	ctx.fillStyle = gradient;
-	ctx.font = "30px Verdana";
+	ctx.font = "Bold " + h1size + " Verdana";
 	ctx.textAlign="center";
-	ctx.fillText("來悦台灣自由行", 200, 50);
+	ctx.shadowColor = "#000000";
+	ctx.shadowOffsetX = 2;
+	ctx.shadowOffsetY = 2;
+	ctx.shadowBlur = 4;
+	ctx.fillText($('.title').text(), width/2, sizeNum);
 });
 </script>
 </head>
 <body>
 <div class="main">
 <div class="header">
-<H1>來悦台灣自由行</H1>
-<canvas id="myCanvas" width="1000" height="600" style="border:1px solid #c3c3c3;"></canvas>
+<H1><canvas class="title" width="600px" height="100px">來悦台灣自由行</canvas></H1>
 </div>
 <div class="content">
 <div class="normal">專業導覧人員，配合舒適的車輛遊台灣，不趕行程：深度旅遊，服務親切。</div>
@@ -41,7 +51,7 @@ $(document).ready(function(){
 <P>A方案: 自訂行程，再議價</P>
 <P>B方案: 配套行程，車資3500元/每日</P>
 <div class="contact">
-<P><a href="viewpoints,html">景點</a></P>
+<P><a href="viewpoints.html">景點</a></P>
 Yahoo： <a href="mailto:wyl0818@yahoo.com.tw">wyl0818@yahoo.com.tw</a><BR>
 Line ID： wyl0818 (0937-260022王玉琳)<BR>
 <BR>
