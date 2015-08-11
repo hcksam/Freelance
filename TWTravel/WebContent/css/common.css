@@ -1,0 +1,14 @@
+@CHARSET "UTF-8";
+
+body{
+	font-size:150%;
+	font-family:Times New Roman;
+	background-color: #FFFFDD;
+	text-align:center;
+	
+	color: #0000FF;
+}
+
+.content{
+	color: #0000FF;
+}

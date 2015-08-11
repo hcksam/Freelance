@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>景點介紹</title>
+<style type="text/css">
+body{
+	font-size:150%;
+	font-family:Times New Roman;
+	background-color: #FFFFAA;
+	text-align:center;
+	
+	color: #00FF66;
+}
+
+.content{
+	color: #00FF00;
+}
+
+img{
+	height:500px;
+}
+
+H1{
+	font-size:300%;
+}
+
+.viewpoints{
+    margin-left:auto; 
+    margin-right:auto;
+}
+
+.imgtd{
+	padding-top:25px;
+	padding-left:25px;
+	padding-right:25px;
+}
+
+.pageList{
+	padding:10px;
+}
+
+.footer{
+	padding:50px;
+}
+
+</style>
+<script src="/TWTravel/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript">
+function fixedTableNum(){
+	maxcolumn = getTableMaxColumnNum();
+	$('table.fixedTable tr').each(function () {
+		columnNum = $(this).find("td").size();
+		if (columnNum < maxcolumn){
+			$(this).append("<td></td>");
+		}
+	});
+}
+
+function getTableMaxColumnNum(){
+	maxcolumnNum = 0;
+	$('table.fixedTable tr').each(function () {
+		columnNum = $(this).find("td").size();
+		if (maxcolumnNum < columnNum){
+			maxcolumnNum = columnNum;
+		}
+	});
+
+	return maxcolumnNum;
+}
+
+function generateTable(page){
+	$(".viewpoints").empty();
+	var columnNum = 0;
+	var imgNo = 0;
+	var startimgNo = (page-1)*imgPerPage;
+    imgsrc.each(function () {
+    	if (imgNo>=startimgNo && imgNo<startimgNo+4){
+	    	var filename = this.href.replace(window.location.host, "").replace("http:///", "");
+	    	filename = filename.substring(filename.lastIndexOf("/")+1);
+	    	var shortName = decodeURI(filename.replace(fileextension,""));
+	    	var html = "";
+	
+	        if (columnNum == 0){
+		        html += "<tr>";
+		        html += "<td class='imgtd'><img src=" + dir + filename + " /></td>";
+		        html += "</tr>";
+		        html += "<tr>";
+		        html += "<td>"+shortName+"</td>";
+		        html += "</tr>";
+	            $(".viewpoints").append(html);
+	            columnNum ++;
+			}else{
+				$('.viewpoints tr:nth-last-child(2)').append("<td class='imgtd'><img src=" + dir + filename + " /></td>");
+				$('.viewpoints tr:last').append("<td>"+shortName+"</td>");
+				columnNum = 0;
+			}
+	    }
+    	imgNo++;
+    });
+
+    generatePageNum(page);
+}
+
+function generatePageNum(page){
+	var totalIMG = imgsrc.size();
+	var tolalPages = totalIMG / imgPerPage;
+
+	if (tolalPages > 1){
+		var html = "";
+		for (var i=1;i<=Math.ceil(tolalPages);i++){
+			if (i == page){
+				html += " "+i+" ";
+			}else{
+				html += "<a href='javascript:generateTable("+i+");'> "+i+" </a>";
+			}
+
+			if (i != Math.ceil(tolalPages)){
+				html += " | ";
+			}
+		}
+		$('.pageList').html(html);
+	}
+}
+
+$(document).ready(function(){
+	dir = "img/viewpoints/";
+	fileextension = ".jpg";
+	imgPerPage = 4;
+
+	$.ajax({
+	    url: dir,
+	    success: function (data) {
+	        imgsrc = $(data).find("a:contains(" + fileextension + ")");
+	        generateTable(1);
+	    }
+	});
+});
+</script>
+</head>
+<body>
+<div class="main">
+<div class="header">
+<H1>景點介紹</H1>
+</div>
+<div class="content">
+<table class="viewpoints">
+</table>
+</div>
+<div class="footer"><div class="pageList"></div><a href="index.html">返回</a></div>
+</div>
+</body>
+</html>
