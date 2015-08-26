@@ -30,7 +30,7 @@
 }
 
 </style>
-<script src="/YUETWTravel/js/jquery-1.11.3.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
 function fixedTableNum(){
 	maxcolumn = getTableMaxColumnNum();
@@ -139,10 +139,18 @@ $(document).ready(function(){
 	fileextension = ".jpg";
 	imgPerPage = 4;
 
+	jQuery.expr[":"].contains = jQuery.expr.createPseudo(function(arg) {
+	    return function( elem ) {
+	        return jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+	    };
+	});
+
 	$.ajax({
 	    url: dir,
 	    success: function (data) {
 	        imgsrc = $(data).find("a:contains(" + fileextension + ")");
+	        //imgsrc.sort(function(a, b){return a-b});
+	        //imgsrc.sort();
 	        generateTable(1);
 	    }
 	});
