@@ -59,16 +59,14 @@ function generateTable(page){
 	var columnNum = 0;
 	var imgNo = 0;
 	var startimgNo = (page-1)*imgPerPage;
-    imgsrc.each(function () {
+	$.each(imgname, function () {
     	if (imgNo>=startimgNo && imgNo<startimgNo+4){
-	    	var filename = this.href.replace(window.location.host, "").replace("http:///", "");
-	    	filename = filename.substring(filename.lastIndexOf("/")+1);
-	    	var shortName = decodeURI(filename.replace(fileextension,""));
+	    	var shortName = decodeURI(this.replace(fileextension,""));
 	    	var html = "";
 	
 	        if (columnNum == 0){
 		        html += "<tr>";
-		        html += "<td class='imgtd'><img src=" + dir + filename + " /></td>";
+		        html += "<td class='imgtd'><img src=" + dir + this + " /></td>";
 		        html += "</tr>";
 		        html += "<tr>";
 		        html += "<td>"+shortName+"</td>";
@@ -76,7 +74,7 @@ function generateTable(page){
 	            $(".viewpoints").append(html);
 	            columnNum ++;
 			}else{
-				$('.viewpoints tr:nth-last-child(2)').append("<td class='imgtd'><img src=" + dir + filename + " /></td>");
+				$('.viewpoints tr:nth-last-child(2)').append("<td class='imgtd'><img src=" + dir + this + " /></td>");
 				$('.viewpoints tr:last').append("<td>"+shortName+"</td>");
 				columnNum = 0;
 			}
@@ -88,7 +86,7 @@ function generateTable(page){
 }
 
 function generatePageNum(page){
-	var totalIMG = imgsrc.size();
+	var totalIMG = imgname.length;
 	var tolalPages = totalIMG / imgPerPage;
 
 	if (tolalPages > 1){
@@ -138,6 +136,7 @@ $(document).ready(function(){
 	dir = "img/viewpoints/";
 	fileextension = ".jpg";
 	imgPerPage = 4;
+	imgname = new Array();
 
 	jQuery.expr[":"].contains = jQuery.expr.createPseudo(function(arg) {
 	    return function( elem ) {
@@ -148,9 +147,14 @@ $(document).ready(function(){
 	$.ajax({
 	    url: dir,
 	    success: function (data) {
-	        imgsrc = $(data).find("a:contains(" + fileextension + ")");
-	        //imgsrc.sort(function(a, b){return a-b});
-	        //imgsrc.sort();
+	        var imgsrc = $(data).find("a:contains(" + fileextension + ")");
+	        imgsrc.each(function () {
+	        	var filename = this.href.replace(window.location.host, "").replace("http:///", "");
+		    	filename = filename.substring(filename.lastIndexOf("/")+1);
+		    	imgname.push(filename);
+	        });
+	        imgname.sort();
+	        imgname.reverse();
 	        generateTable(1);
 	    }
 	});
