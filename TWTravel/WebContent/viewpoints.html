@@ -61,9 +61,9 @@ function generateTable(page){
 	var startimgNo = (page-1)*imgPerPage;
 	$.each(imgname, function () {
     	if (imgNo>=startimgNo && imgNo<startimgNo+4){
-	    	var shortName = decodeURI(this.replace(fileextension,""));
+	    	var shortName = this.replace(fileextension,"");
 	    	var sortIndex = shortName.indexOf(".");
-	    	if (sortIndex == 1){
+	    	if (sortIndex >= 1){
 	    		shortName = shortName.substr(sortIndex+1, shortName.length);
 	    	}
 	    	var html = "";
@@ -155,10 +155,40 @@ $(document).ready(function(){
 	        imgsrc.each(function () {
 	        	var filename = this.href.replace(window.location.host, "").replace("http:///", "");
 		    	filename = filename.substring(filename.lastIndexOf("/")+1);
-		    	imgname.push(filename);
+		    	imgname.push(decodeURI(filename));
 	        });
-	        imgname.sort();
-	        imgname.reverse();
+	        imgname.sort(function(a, b){
+	        	var ashortName = a.replace(fileextension,"");
+	        	var bshortName = b.replace(fileextension,"");
+		    	var asortIndex = ashortName.indexOf(".");
+		    	var bsortIndex = bshortName.indexOf(".");
+		    	
+		    	if (asortIndex < 1 && bsortIndex < 1){
+		    		return b-a;
+			    }
+		    	if (asortIndex < 1){
+			    	return 1;
+		    	}
+		    	if (bsortIndex < 1){
+			    	return -1;
+		    	}
+		    	
+		    	ashortName = parseInt(ashortName.substr(0, asortIndex));
+		    	bshortName = parseInt(bshortName.substr(0, bsortIndex));
+
+		    	if (ashortName == bshortName){
+		    		return b-a;
+			    }
+		    	if (ashortName > bshortName){
+		    		return -1;
+			    }
+		    	if (ashortName < bshortName){
+		    		return 1;
+			    }
+			    
+		    	return b-a;
+		    });
+	        //imgname.reverse();
 	        generateTable(1);
 	    }
 	});
